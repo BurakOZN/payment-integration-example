@@ -25,7 +25,7 @@ namespace PaymentIntegration.Net5Example.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return View(new ErrorViewModel() { ErrorMessage=""});
+            return View(new ErrorViewModel() { ErrorMessage = "" });
         }
         [HttpPost]
         public async Task<IActionResult> Index(PaymentModel paymentModel)
@@ -62,6 +62,12 @@ namespace PaymentIntegration.Net5Example.Controllers
             checkPaymentRequest.Token = token;
             var payment = new Payment(paymentOptions);
             var response = await payment.CheckPayment(checkPaymentRequest);
+
+
+            var response2 = await payment.CheckByProcessId(new CheckByProcessIdRequest() { ProcessId = response.Result.Result.ProcessId });
+            var response3 = await payment.CheckByToken(new CheckByTokenRequest() { Token = token });
+            var response4 = await payment.CheckOrderId(new CheckByOrderIdRequest() { OrderId = response.Result.Result.OrderId });
+
             if (response.IsConnectionSuccess)
                 return Ok(response.Result.Result);//Just a quick example :)
             return View();
