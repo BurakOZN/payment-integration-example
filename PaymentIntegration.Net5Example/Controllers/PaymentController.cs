@@ -41,6 +41,7 @@ namespace PaymentIntegration.Net5Example.Controllers
             auth3DRequest.InstallmentCount = 1;
             auth3DRequest.Lang = "TR";
             auth3DRequest.OrderId = DateTime.Now.Ticks.ToString();
+            auth3DRequest.ReturnUrl = "https://localhost:5001/Payment/ReturnUrl";
 
             var payment = new Payment(paymentOptions);
             var response = await payment.Auth3D(auth3DRequest);
@@ -63,10 +64,10 @@ namespace PaymentIntegration.Net5Example.Controllers
             var payment = new Payment(paymentOptions);
             var response = await payment.CheckPayment(checkPaymentRequest);
 
-
-            var response2 = await payment.CheckByProcessId(new CheckByProcessIdRequest() { ProcessId = response.Result.Result.ProcessId });
-            var response3 = await payment.CheckByToken(new CheckByTokenRequest() { Token = token });
-            var response4 = await payment.CheckOrderId(new CheckByOrderIdRequest() { OrderId = response.Result.Result.OrderId });
+            ///Other check methods
+            //var response2 = await payment.CheckByProcessId(new CheckByProcessIdRequest() { ProcessId = response.Result.Result.ProcessId });
+            //var response3 = await payment.CheckByToken(new CheckByTokenRequest() { Token = token });
+            //var response4 = await payment.CheckOrderId(new CheckByOrderIdRequest() { OrderId = response.Result.Result.OrderId });
 
             if (response.IsConnectionSuccess)
                 return Ok(response.Result.Result);//Just a quick example :)
